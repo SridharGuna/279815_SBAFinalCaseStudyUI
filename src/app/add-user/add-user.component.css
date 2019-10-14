@@ -1,0 +1,20 @@
+.divrcorners
+{
+    border-radius: 25px;
+    border: 1px solid ;
+    padding: 20px; 
+   
+}
+.inputText
+{
+    height: 45px;
+    width: 500px;
+}
+hr {
+    border-top:1px dotted #000;
+    /*Rest of stuff here*/
+}
+
+td{
+    padding: 10px;
+}

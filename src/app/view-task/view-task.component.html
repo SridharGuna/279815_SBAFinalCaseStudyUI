@@ -1,0 +1,96 @@
+<div style=" padding: 5px;margin: 8px; ">
+  <div class="divrcorners">
+    <table>
+      <tr aria-rowspan="6">
+        <td> Task:</td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="filter.Task" placeholder="search task" />
+        </td>
+        <td>Sort By:
+          </td>
+          <td>
+              <button class="btn btn-secondary" (click)="sortTable('StartDate','Date')" type="button">Start Date</button>
+          </td>
+          <td>
+              <button class="btn btn-secondary" (click)="sortTable('EndDate','Date')" type="button">End Date</button>
+          </td>
+          <td>
+              <button class="btn btn-secondary" (click)="sortTable('Priority','Number')" type="button" >Priority</button>
+          </td>
+          <td>
+              <button class="btn btn-secondary" (click)="sortTable('Status','String')" type="button" >Completed</button>
+          </td>
+        <!-- <td> Parent Task:</td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="filter.ParentTask" placeholder="search ParentTask" />
+        </td> -->
+      </tr>
+      <!-- <tr>
+        <td> Priority To:</td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="filter.Priority" placeholder="search priority From"
+          />
+        </td>
+        <td> Start Date:</td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="filter.StartDate" placeholder="search startDate" />
+        </td>
+        <td> End Date:</td>
+        <td>
+          <input class="form-control" type="text" [(ngModel)]="filter.EndDate" placeholder="search endDate" />
+        </td>
+      </tr> -->
+    </table>   
+  </div>
+  
+  <br>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Parent</th>
+          <th>Priority</th>
+          <th>start</th>
+          <th>End</th>
+          <th></th>          
+        </tr>
+      </thead>
+      
+      <tbody>
+        <tr><td colspan="7"><hr></td></tr>
+        <tr *ngFor="let task of tasks |  bookfilter:filter">          
+          <td>
+            <input class="form-control" wrap="hard" class="inputText" type="text" [(ngModel)]="task.Task" [disabled]="!task.isEditable" />
+        
+          </td>
+          <td>
+            <input class="form-control" class="inputText" type="text" [(ngModel)]="task.ParentTask" [disabled]="!task.isEditable" />
+          </td>
+          <td>
+            {{ task.Priority }}
+          </td>
+          <td>
+            {{ task.StartDate| date:'MM/dd/yyyy' }} 
+          </td>
+          <td>         
+            <label id="lblEndDate{{task.TaskId}}">   {{ task.EndDate | date:'MM/dd/yyyy' }}</label>
+          </td>
+          <td>
+            <ng-template *ngIf="task.Status == true;then AddTaskBlock; else ViewTaskBlock">
+            </ng-template>
+            <ng-template #AddTaskBlock>
+              <button class="btn btn-primary" (click)="sendMeHome(task)" id="btnEditTask{{task.TaskId}}" >Edit</button>
+              <button style="margin-left: 6px;" class="btn btn-danger" id="btnEndTask{{task.TaskId}}" (click)="updateEndDate('1',task.TaskId,task)">End Task</button>
+            </ng-template>
+            <ng-template #ViewTaskBlock>
+              <button class="btn btn-secondary" disabled>Edit</button>
+              <button style="margin-left: 6px;" class="btn btn-secondary" disabled>End Task</button>
+            </ng-template>
+          </td>          
+        </tr>
+        <tr><td colspan="7"><hr></td></tr>
+           </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,213 @@
+<div style="margin:5px;width:70%;  " class="divrcorners">
+    <form #userRegistrationForm="ngForm" (ngSubmit)="OnSubmit(userRegistrationForm)">
+
+        <table>
+            <tr>
+                <td>Task : </td>
+                <td>
+                    <input required type="text" class="form-control" placeholder="Task Name" name="Task" #Task="ngModel" [(ngModel)]="task.Task"
+                    />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="checkbox" data-md-icheck (change)="toggleVisibility($event)">
+                    <label style=" margin-right: 10px;"> Parent Task</label>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Project : </td>
+                <td>
+                    <input type="hidden" name="ProjectId" [(ngModel)]="task.ProjectId" class="form-control">
+                    <input required [disabled]=is_parentTask type="text" class="form-control" placeholder="Project Name" name="ProjectName" #Task="ngModel"
+                        [(ngModel)]="task.ProjectName" />
+                </td>
+                <td>
+                    <button class="btn btn-info" type="button" (click)="htmlInsideModal.open()">search</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Task">Priority: </label>
+                </td>
+
+                <td>
+                    <input required [disabled]=is_parentTask class="form-control" type="range" min="0" max="30" name="Priority" #Priority="ngModel"
+                        [(ngModel)]="task.Priority" />
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Task"> Parent Task:</label>
+                </td>
+                <td>
+                    <input type="hidden" name="ParentId" [(ngModel)]="task.ParentId" class="form-control">
+                    <input type="text" [disabled]=is_parentTask placeholder="Parent Task" class="form-control" name="ParentTask" #ParentTask="ngModel"
+                        [(ngModel)]="task.ParentTask">
+                </td>
+                <td>
+                    <button class="btn btn-info" type="button" (click)="htmlInsideModalParentTask.open()">search</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Task">StartDate :</label>
+                </td>
+                <td>
+                    <input required type="date" [disabled]=is_parentTask class="form-control" name="StartDate" #StartDate="ngModel" [(ngModel)]="task.StartDate">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="EndDate">End Date : </label>
+                </td>
+                <td>
+                    <input type="date" class="form-control" [disabled]=is_parentTask name="EndDate" #EndDate="ngModel" [(ngModel)]="task.EndDate">
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="Task">User : </label>
+                </td>
+                <td>
+                    <input type="hidden" name="UserId" [(ngModel)]="task.UserId" class="form-control">
+                    <input required type="text" [disabled]=is_parentTask class="form-control" placeholder="User Name" name="UserName" #Task="ngModel"
+                        [(ngModel)]="task.UserName" />
+                </td>
+                <td>
+                    <button class="btn btn-info" type="button" (click)="htmlInsideModalUser.open()">search</button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button [disabled]="!userRegistrationForm.valid" class="btn-large btn-submit" type="submit" class="btn btn-primary">Add Task</button>
+                    <button style="margin-left: 6px;" class="btn-large btn-submit" (click)="resetForm()" type="reset" class="btn btn-secondary">Reset</button>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div>
+     <modal #htmlInsideModal>
+        <ng-template #modalHeader>
+            <h4>Manager</h4>
+        </ng-template>
+        <ng-template #modalBody>
+            <table>
+                <tr>
+                    <td>Select manager</td>
+                       <td>
+                            <div id="divrcorners" class="divrcorners" style="overflow-y : scroll;height: 200px;
+                            width: 300px; ">
+                                <table>
+                                    <tr *ngFor="let u of projects">
+                                        <th>
+                                            <input (change)="changeProject(u.ProjectId,u.ProjectName)" type="radio" name="radiogroup" id="{{u.ProjectId}}" value="{{u.ProjectName}}">
+                                        </th>
+                                        <th>
+                                            {{u.ProjectName}}     
+                                        </th>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <button type="Ok" class="btn-info" (click)="htmlInsideModal.close()">Ok</button> &nbsp;&nbsp;
+                        <button type="button" class="btn btn-warning" (click)="htmlInsideModal.close()">Cancel</button>
+                    </td>
+                </tr>
+            </table>
+        </ng-template>
+    </modal>
+</div>
+
+
+<div>
+        <modal #htmlInsideModalParentTask>
+            <ng-template #modalHeader>
+                <h4>Parent Task</h4>
+            </ng-template>
+            <ng-template #modalBody>
+                <table>
+                    <tr>
+                        <td>Parent Task</td>
+                        <td>
+                                <div id="divrcorners" class="divrcorners" style="overflow-y : scroll;height: 200px;width: 300px; ">
+                                    <table>
+                                        <tr *ngFor="let s of parentTasks">
+                                            <th>
+                                                <input (change)="changeparentTask(s.ParentId,s.ParentTask)" type="radio" name="radiogroups" id="{{s.ParentId}}" value="{{s.ParentTask}}">
+                                            </th>
+                                            <th>
+                                                {{s.ParentTask}}     
+                                            </th>
+                                        </tr>
+                                    </table>
+    
+                                </div>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="Ok" class="btn-info" (click)="htmlInsideModalParentTask.close()">Ok</button> &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning" (click)="htmlInsideModalParentTask.close()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </ng-template>
+        </modal>
+    </div>
+
+
+<div>
+        <modal #htmlInsideModalUser>
+            <ng-template #modalHeader>
+                <h4>User</h4>
+            </ng-template>
+            <ng-template #modalBody>
+                <table>
+                    <tr>
+                        <td>Select User</td>
+                        <td>
+                                <div id="divrcorners" class="divrcorners" style="overflow-y : scroll;height: 200px;
+                                width: 300px; ">
+                                    <table>
+                                        <tr *ngFor="let u of users">
+                                            <th>
+                                                <input (change)="changeUser(u.UserId,u.FirstName)" type="radio" name="radiogroup" id="{{u.UserId}}" value="{{u.FirstName}}">
+                                            </th>
+                                            <th>
+                                                {{u.FirstName}}     
+                                            </th>
+                                        </tr>
+                                    </table>
+    
+                                </div>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="Ok" class="btn-info" (click)="htmlInsideModalUser.close()">Ok</button> &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning" (click)="htmlInsideModalUser.close()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </ng-template>
+        </modal>
+    </div>

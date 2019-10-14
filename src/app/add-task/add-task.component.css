@@ -1,0 +1,19 @@
+@import "~bootstrap/dist/css/bootstrap.css";
+.lblleftpanel{
+    float: left;     
+width: 25%;
+}
+.lblrightpanel{
+    float: left;
+    margin-left: 10px;
+  width: 50%;
+ 
+} 
+.divrcorners
+{
+   
+    border-radius: 25px;
+    border: 1px solid ;
+    padding: 20px; 
+   
+}

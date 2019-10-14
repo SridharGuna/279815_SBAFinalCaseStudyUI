@@ -1,0 +1,111 @@
+ 
+ <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js" type='text/javascript'></script>
+ <script src='controller.js' type='text/javascript'></script>
+<div style=" padding: 5px;margin: 8px; ">
+   <form #RegistrationForm="ngForm" (ngSubmit)="OnSubmit(RegistrationForm)">
+    <div class="divrcorners1">
+      <table>
+        <tr>
+          <td>First Name:</td>
+          <td>
+            <input id="txtFirstName"  required type="text" class="inputText" class="form-control" placeholder="First Name" name="FirstName"   [(ngModel)]="FirstName"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Last Name:</td>
+          <td>
+            <input id="txtLastName" required type="text" class="inputText" class="form-control" placeholder="Last Name" name="LastName"   [(ngModel)]="LastName"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>Employee ID:</td>
+          <td>
+            <input id="txtEmployeeId" required type="text" class="inputText" class="form-control" placeholder="Employee Id" name="EmployeeId"   [(ngModel)]="EmployeeId"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label></label>
+          </td>
+          <td>
+            <br>
+            
+
+            <ng-template *ngIf="isAddAction == true;then AddTaskBlock; else ViewTaskBlock">
+              </ng-template>
+              <ng-template #AddTaskBlock>
+                  <button [disabled]="!RegistrationForm.valid" class="btn-large btn-submit" type="submit" class="btn btn-primary" id="btnAdd" >Add</button>
+                  <button style="margin-left: 6px;" class="btn-large btn-submit" (click)="resetForm()" type="reset" class="btn btn-secondary" id="btnReset">Reset</button>
+              </ng-template>
+              <ng-template #ViewTaskBlock>
+                  <button [disabled]="!RegistrationForm.valid" class="btn-large btn-submit" type="button" (click)="UpdateForm(this)" class="btn btn-primary" id="btnAdd" >Update</button>
+                  <button style="margin-left: 6px;" class="btn-large btn-submit" (click)="CancelForm()" type="reset" class="btn btn-secondary" id="btnReset">Cancel</button>
+              </ng-template>
+           
+          </td>
+        </tr>
+      </table>
+    </div> 
+   </form> 
+  <br>
+  <div class="divrcorners">
+    <div>
+      <table>
+        <tr>
+          <td>Name:</td>
+          <td>
+            <input type="text" class="form-control" [(ngModel)]="filter.FirstName" style="width: 250px;" placeholder="User Search...">
+          </td>
+          <td>Sort:</td>
+          <td>
+            <button class="btn btn-secondary" (click)="sortTable('FirstName','String')">First Name</button>
+          </td>
+          <td>
+            <button class="btn btn-secondary" (click)="sortTable('LastName','String')">Last Name</button>
+          </td>
+          <td>
+            <button class="btn btn-secondary" (click)="sortTable('EmployeeId','String')">Id</button>
+          </td>
+        </tr>
+
+      </table>
+    </div>
+  <hr>
+    <div>
+      <table *ngFor="let user of users | bookfilter  : filter" id="tbl{{user.UserId}}" >
+        <tr>
+          <td>
+              <input type="hidden" name="UserId" [(ngModel)]="user.UserId" class="form-control">
+            <input id="txtFirstName{{user.UserId}}" class="form-control" class="inputText" type="text" [(ngModel)]="user.FirstName"/>
+          </td>
+          <td>
+            <button id="btnEdit{{user.UserId}}" class="btn btn-lg btn-primary" type="button" (click)="EditForm(user)" >Edit</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input id="txtLastName{{user.UserId}}" class="form-control" class="inputText" type="text" [(ngModel)]="user.LastName"/>
+          </td>
+          <td>
+            <button id="btnDelete{{user.UserId}}" class="btn btn-danger" type="button" (click)="DeleteForm(user)" >Delete</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input id="txtEmployeeId{{user.UserId}}" class="form-control" class="inputText" type="text" [(ngModel)]="user.EmployeeId"/>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <hr>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+</div>

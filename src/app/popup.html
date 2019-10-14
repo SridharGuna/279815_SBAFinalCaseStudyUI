@@ -1,0 +1,37 @@
+<div>
+        <modal #htmlInsideModal>
+            <ng-template #modalHeader>
+                <h4>Manager</h4>
+            </ng-template>
+            <ng-template #modalBody>
+                <table>
+                    <tr>
+                        <td>Select manager</td>
+                        <!-- <td>
+                            <div id="divrcorners" class="divrcorners" style="overflow-y : scroll;height: 200px;
+                            width: 300px; ">
+                                <table>
+                                    <tr *ngFor="let u of users">
+                                        <th>
+                                            <input (change)="testbook(u.UserId,u.FirstName)" type="radio" name="radiogroup" id="{{u.UserId}}" value="{{u.FirstName}}">
+                                        </th>
+                                        <th>
+                                            {{u.FirstName}}     
+                                        </th>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </td> -->
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="Ok" class="btn-info" (click)="htmlInsideModal.close()">Ok</button> &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning" (click)="htmlInsideModal.close()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </ng-template>
+        </modal>
+    </div>

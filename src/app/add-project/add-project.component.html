@@ -1,0 +1,220 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/css/bootstrap-select.min.css" />
+
+<div style=" padding: 5px;margin: 8px; ">
+    <form #ProjectRegistrationForm="ngForm" (ngSubmit)="OnSubmit(ProjectRegistrationForm)">
+        <table>
+            <tr>
+                <td>Project:</td>
+                <td>
+                    <input id="txtProject" required type="text" class="inputText" class="form-control" placeholder="Project Name" name="ProjectName"
+                        [(ngModel)]="ProjectName" />
+                </td>
+
+            </tr>
+            <tr>
+                <td>
+                    <label></label>
+                </td>
+                <td>
+
+                    <div>
+                        <div style="float: left;">
+                            <input type="checkbox" checked="disabled" data-md-icheck (change)="toggleVisibility($event)" />
+                        </div>
+                        <div style="float: left;margin-top: -4px;">
+                            <label> disable Start and End Date </label> &nbsp;
+
+                            <input id="txtStartDate" [attr.disabled]="disabled?'':null" type="date" class="form-control" class="inputText" placeholder="Start Date"
+                                name="StartDate" [(ngModel)]="StartDate" /> &nbsp;
+                            <input id="txtEndDate" [attr.disabled]="disabled?'':null" type="date" class="form-control" class="inputText" placeholder="End Date"
+                                name="EndDate" [(ngModel)]="EndDate" />
+                        </div>
+                    </div>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>Priority:</td>
+                <td>
+                    <input required class="form-control" type="range" min="0" max="30" name="Priority" [(ngModel)]="Priority" />
+                </td>
+            </tr>
+            <tr>
+                <td>Manager:</td>
+                <td>
+                    <input id="txtUserId" type="hidden" name="UserId" [(ngModel)]="UserId" class="form-control">
+                    <input id="txtUserName" required type="text" class="inputText" class="form-control" placeholder="Manager Name" name="UserName"
+                        [(ngModel)]="UserName" />
+                </td>
+
+                <td>
+                    <button class="btn btn-info" type="button" (click)="htmlInsideModal.open()">search</button>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <ng-template *ngIf="isAddAction == true;then AddTaskBlock; else ViewTaskBlock">
+                    </ng-template>
+                    <ng-template #AddTaskBlock>
+                        <button [disabled]="!ProjectRegistrationForm.valid" class="btn-large btn-submit" type="submit" class="btn btn-primary" id="btnAdd">Add</button>
+                        <button style="margin-left: 6px;" class="btn-large btn-submit" (click)="resetForm()" type="reset" class="btn btn-secondary"
+                            id="btnReset">Reset</button>
+                    </ng-template>
+                    <ng-template #ViewTaskBlock>
+                        <button [disabled]="!ProjectRegistrationForm.valid" class="btn-large btn-submit" type="button" (click)="UpdateForm(this)"
+                            class="btn btn-primary" id="btnAdd">Update</button>
+                        <button style="margin-left: 6px;" class="btn-large btn-submit" (click)="CancelForm()" type="reset" class="btn btn-secondary"
+                            id="btnReset">Cancel</button>
+                    </ng-template>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div>
+        <modal #htmlInsideModal>
+            <ng-template #modalHeader>
+                <h4>Manager</h4>
+            </ng-template>
+            <ng-template #modalBody>
+                <table>
+                    <tr>
+                        <td>Select manager</td>
+                        <td>
+                            <div id="divrcorners" class="divrcorners" style="overflow-y : scroll;height: 200px;
+                            width: 300px; ">
+                                <table>
+                                    <tr *ngFor="let u of users">
+                                        <th>
+                                            <input (change)="testbook(u.UserId,u.FirstName)" type="radio" name="radiogroup" id="{{u.UserId}}" value="{{u.FirstName}}">
+                                        </th>
+                                        <th>
+                                            {{u.FirstName}}
+                                        </th>
+                                    </tr>
+                                </table>
+
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <button type="Ok" class="btn-info" (click)="htmlInsideModal.close()">Ok</button> &nbsp;&nbsp;
+                            <button type="button" class="btn btn-warning" (click)="htmlInsideModal.close()">Cancel</button>
+                        </td>
+                    </tr>
+                </table>
+            </ng-template>
+        </modal>
+    </div>
+    <div class="divrcorners">
+        <table>
+            <tr>
+                <td colspan="5">
+                    <input type="text" class="form-control" [(ngModel)]="filter.ProjectName" style="width: 600px;" placeholder="Project Search...">
+                </td>
+            </tr>
+            <tr>
+                <td>Sort By:
+                </td>
+                <td>
+                    <button class="btn btn-secondary "  (click)="sortTable('StartDate','Date')" type="button">Start Date</button>
+                </td>
+                <td>
+                    <button class="btn btn-secondary" (click)="sortTable('EndDate','Date')" type="button">End Date</button>
+                </td>
+                <td>
+                    <button class="btn btn-secondary" type="button" (click)="sortTable('Priority','Number')" >Priority</button>
+                </td>
+                <td>
+                    <button class="btn btn-secondary " (click)="sortTable('IsCompleted','String')" type="button">Completed</button>
+                </td>
+            </tr>
+        </table>
+        <hr>
+        <table *ngFor="let project of projects| bookfilter  : filter" id="tbl{{project.ProjectId}}">
+            <tr>
+                <td style=" background-color:silver;">
+                    <table>
+                        <tr>
+                            <td>Project:
+                                <input type="hidden" name="ProjectId" [(ngModel)]="project.ProjectId" class="form-control">
+                                <label id="lblEndDate{{project.ProjectId}}"> {{ project.ProjectName }}</label>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>No of Tasks:</td>
+                            <td>
+                                <label id="lblEndDate{{project.ProjectId}}"> {{ project.TaskCount }}</label>
+                            </td>
+                            <td>Completed:</td>
+                            <td>
+                                <label id="lblEndDate{{project.ProjectId}}"> {{project.IsCompleted == true ? 'Yes' : 'No'}}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>StartDate:</td>
+                            <td>
+                                <label id="lblEndDate{{project.ProjectId}}"> {{ project.StartDate | date:'MM/dd/yyyy'}}</label>
+                            </td>
+                            <td>EndDate:</td>
+                            <td>
+                                <label id="lblEndDate{{project.ProjectId}}"> {{ project.EndDate | date:'MM/dd/yyyy'}}</label>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <td>
+                            <tr style="text-align: top;">
+                                <td style=" text-align: top;">Priority</td>
+                            </tr>
+                            <tr>
+                                <td style="background-color:silver;height: 100px;">
+                                    <label id="lblEndDate{{project.ProjectId}}"> {{ project.Priority }}</label>
+                                </td>
+                            </tr>
+                        </td>
+                    </table>
+                </td>
+                <td style="">
+                    <table>
+                        <tr>
+                            <td>
+                                <!-- <button class="btn btn-primary" type="button" (click)="EditForm(project)">Update</button>
+                                 <br>  <br>
+                                    <button class="btn btn-danger" type="button" (click)="DeleteForm(project)">Sudpend</button> -->
+                                <ng-template *ngIf="project.IsCompleted != true;then AddTaskBlock; else ViewTaskBlock">
+                                </ng-template>
+                                <ng-template #AddTaskBlock>
+                                    <button class="btn btn-primary" (click)="EditForm(project)" id="btnEditTask{{project.ProjectId}}">Update</button>
+                                    <br>
+                                    <br>
+                                    <button style="margin-left: 6px;" class="btn btn-danger" id="btnEndTask{{project.ProjectId}}" (click)="DeleteForm(project)">Sudpend</button>
+                                </ng-template>
+                                <ng-template #ViewTaskBlock>
+                                    <button class="btn btn-secondary" disabled>Update</button>
+                                    <br>
+                                    <br>
+                                    <button style="margin-left: 6px;" class="btn btn-secondary" disabled>Sudpend</button>
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <hr>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>

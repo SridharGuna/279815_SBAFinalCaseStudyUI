@@ -1,0 +1,32 @@
+.ViewTask
+{
+    float: left;
+    margin-left: 10px;
+}
+.AddTask{
+    float: left; 
+ 
+}
+a{
+    font-size: 18px;
+    font-weight: bold;
+ 
+}
+
+/* visited link */
+a:visited {
+    color: black;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: blue;
+  }
+  
+  /* selected link */
+  a:active {
+    color: blue;
+  }
+  a:active {
+    text-decoration: underline;
+  }
